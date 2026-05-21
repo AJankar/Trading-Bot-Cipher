@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EquityLens — Institutional Valuation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ── Header ── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-mark">▣</span>
+        <span class="logo-text">EQUITY<span class="accent">LENS</span></span>
+      </div>
+      <div class="header-meta">
+        <span class="header-tag">LIVE DATA · FINNHUB</span>
+        <span class="header-tag">NOT FINANCIAL ADVICE</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Search ── -->
+  <section class="search-section">
+    <div class="search-container">
+      <div class="search-wrapper">
+        <span class="search-prefix">$</span>
+        <input
+          id="tickerInput"
+          class="ticker-input"
+          type="text"
+          placeholder="ENTER TICKER SYMBOL"
+          maxlength="10"
+          autocomplete="off"
+          autocapitalize="characters"
+          spellcheck="false"
+        />
+        <button id="analyzeBtn" class="analyze-btn">
+          <span class="btn-text">ANALYZE</span>
+          <span class="btn-icon">→</span>
+        </button>
+      </div>
+      <div class="search-hints">
+        <span>Try:</span>
+        <button class="hint-chip" data-ticker="AAPL">AAPL</button>
+        <button class="hint-chip" data-ticker="MSFT">MSFT</button>
+        <button class="hint-chip" data-ticker="NVDA">NVDA</button>
+        <button class="hint-chip" data-ticker="TSLA">TSLA</button>
+        <button class="hint-chip" data-ticker="AMZN">AMZN</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Main dashboard ── -->
+  <main id="dashboard" class="dashboard hidden">
+
+    <!-- ── Headline card ── -->
+    <section class="section headline-section">
+      <div class="headline-card">
+        <div class="headline-left">
+          <div class="company-meta">
+            <span id="hdTicker" class="hd-ticker"></span>
+            <span id="hdName" class="hd-name"></span>
+          </div>
+          <div class="rec-row">
+            <div id="recBadge" class="rec-badge"></div>
+            <div class="conf-block">
+              <span class="conf-label">CONFIDENCE</span>
+              <span id="confValue" class="conf-value"></span>
+            </div>
+          </div>
+        </div>
+        <div class="headline-right">
+          <div class="price-block">
+            <span class="price-label">CURRENT PRICE</span>
+            <span id="currentPrice" class="price-value"></span>
+          </div>
+          <div class="target-block">
+            <span class="target-label">12M MODEL TARGET</span>
+            <span id="targetPrice" class="target-value"></span>
+            <span class="target-note">DCF-anchored · not a forecast</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Metrics grid ── -->
+    <section class="section">
+      <div class="section-header">
+        <span class="section-title">VALUATION METRICS</span>
+        <span class="section-line"></span>
+      </div>
+      <div class="metrics-grid" id="metricsGrid">
+        <!-- filled by JS -->
+      </div>
+    </section>
+
+    <!-- ── DCF assumptions ── -->
+    <section class="section">
+      <div class="section-header">
+        <span class="section-title">DCF ASSUMPTIONS</span>
+        <span class="section-line"></span>
+      </div>
+      <div class="dcf-assumptions" id="dcfAssumptions">
+        <!-- filled by JS -->
+      </div>
+    </section>
+
+    <!-- ── Peer comparison ── -->
+    <section class="section" id="peerSection">
+      <div class="section-header">
+        <span class="section-title">PEER COMPARISON</span>
+        <span class="section-line"></span>
+      </div>
+      <div class="table-wrapper">
+        <table class="peer-table" id="peerTable">
+          <thead>
+            <tr>
+              <th>SYMBOL</th>
+              <th class="num-col">P/E</th>
+              <th class="num-col">P/S</th>
+              <th class="num-col">EV/EBITDA</th>
+              <th>VS SUBJECT</th>
+            </tr>
+          </thead>
+          <tbody id="peerTableBody"></tbody>
+        </table>
+      </div>
+      <div class="peer-summary-text" id="peerSummaryText"></div>
+    </section>
+
+    <!-- ── Outlook horizons ── -->
+    <section class="section">
+      <div class="section-header">
+        <span class="section-title">OUTLOOK BY HORIZON</span>
+        <span class="section-line"></span>
+      </div>
+      <div class="horizon-grid">
+        <div class="horizon-card">
+          <div class="horizon-label">
+            <span class="horizon-icon">◈</span>
+            <span>DAYS</span>
+          </div>
+          <p id="outlookDays" class="horizon-text"></p>
+        </div>
+        <div class="horizon-card">
+          <div class="horizon-label">
+            <span class="horizon-icon">◈</span>
+            <span>WEEKS</span>
+          </div>
+          <p id="outlookWeeks" class="horizon-text"></p>
+        </div>
+        <div class="horizon-card">
+          <div class="horizon-label">
+            <span class="horizon-icon">◈</span>
+            <span>MONTHS</span>
+          </div>
+          <p id="outlookMonths" class="horizon-text"></p>
+        </div>
+        <div class="horizon-card">
+          <div class="horizon-label">
+            <span class="horizon-icon">◈</span>
+            <span>YEARS</span>
+          </div>
+          <p id="outlookYears" class="horizon-text"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Investment thesis ── -->
+    <section class="section">
+      <div class="section-header">
+        <span class="section-title">INVESTMENT THESIS</span>
+        <span class="section-line"></span>
+      </div>
+      <div id="thesis" class="thesis-body"></div>
+    </section>
+
+  </main>
+
+  <!-- ── Loading state ── -->
+  <div id="loadingState" class="state-overlay hidden">
+    <div class="loading-inner">
+      <div class="spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring r2"></div>
+      </div>
+      <div class="loading-text">FETCHING LIVE DATA</div>
+      <div class="loading-sub" id="loadingTicker"></div>
+      <div class="loading-steps" id="loadingSteps">
+        <div class="step" id="step1">◉ Pulling quote & profile</div>
+        <div class="step" id="step2">◎ Loading financials & metrics</div>
+        <div class="step" id="step3">◎ Analyzing peer set</div>
+        <div class="step" id="step4">◎ Running DCF model</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Error state ── -->
+  <div id="errorState" class="state-overlay hidden">
+    <div class="error-inner">
+      <div class="error-icon">⚠</div>
+      <div class="error-title">ANALYSIS FAILED</div>
+      <div id="errorMessage" class="error-message"></div>
+      <button id="errorRetry" class="analyze-btn" style="margin-top:24px">RETRY</button>
+    </div>
+  </div>
+
+  <!-- ── Empty / landing state ── -->
+  <div id="landingState" class="state-overlay">
+    <div class="landing-inner">
+      <div class="landing-icon">◣</div>
+      <div class="landing-title">INSTITUTIONAL EQUITY VALUATION</div>
+      <div class="landing-sub">Enter a ticker above to run a live multi-metric analysis against real Finnhub market data. Outputs a BUY / HOLD / SELL assessment with confidence score, DCF intrinsic value, peer comparison, and grounded horizon outlook.</div>
+      <div class="feature-list">
+        <div class="feature-item"><span class="fi-dot buy-dot">●</span>Live Finnhub data — no stale estimates</div>
+        <div class="feature-item"><span class="fi-dot">●</span>7-component valuation framework</div>
+        <div class="feature-item"><span class="fi-dot">●</span>Transparent DCF with stated assumptions</div>
+        <div class="feature-item"><span class="fi-dot">●</span>3–5 peer benchmark comparison</div>
+        <div class="feature-item"><span class="fi-dot sell-dot">●</span>4-horizon outlook grounded in data</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-logo">EQUITYLENS</span>
+      <span class="footer-disclaimer">
+        ⚠ This dashboard produces valuation snapshots grounded in current metrics — not predictions of future price — and is not financial advice. All data sourced live from Finnhub. Past performance does not indicate future results. Consult a licensed financial advisor before making investment decisions.
+      </span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
