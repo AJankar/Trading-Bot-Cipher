@@ -409,7 +409,11 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`\n✅  Stock Analyzer running at http://localhost:${PORT}`);
-  console.log(`   Finnhub key loaded: ${API_KEY.slice(0, 4)}${'*'.repeat(Math.max(0, API_KEY.length - 4))}\n`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`\n✅  Stock Analyzer running at http://localhost:${PORT}`);
+    console.log(`   Finnhub key loaded: ${API_KEY.slice(0, 4)}${'*'.repeat(Math.max(0, API_KEY.length - 4))}\n`);
+  });
+}
+
+module.exports = app;
