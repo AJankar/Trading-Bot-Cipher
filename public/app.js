@@ -13,6 +13,7 @@ const errorState    = $('errorState');
 const landingState  = $('landingState');
 const errorMessage  = $('errorMessage');
 const loadingTicker = $('loadingTicker');
+const logo          = $('logo');
 
 let lastTicker = '';
 
@@ -393,6 +394,14 @@ document.querySelectorAll('.hint-chip').forEach(btn => {
     analyze(t);
   });
 });
+
+if (logo) {
+  logo.addEventListener('click', () => {
+    showLanding();
+    tickerInput.value = '';
+    tickerInput.focus();
+  });
+}
 
 $('errorRetry').addEventListener('click', () => {
   if (lastTicker) analyze(lastTicker);
