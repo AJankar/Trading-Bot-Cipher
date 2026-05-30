@@ -24,6 +24,23 @@
     </div>
   </header>
 
+  <div id="stockSummaryCard" class="stock-summary-card hidden">
+    <div class="stock-summary-inner">
+      <div class="summary-item">
+        <span class="summary-label">STOCK</span>
+        <span id="summaryTicker" class="summary-value">—</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">CURRENT PRICE</span>
+        <span id="summaryPrice" class="summary-value">—</span>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">PREDICTION</span>
+        <span id="summaryPrediction" class="prediction-pill">—</span>
+      </div>
+    </div>
+  </div>
+
   <!-- ── Search ── -->
   <section class="search-section">
     <div class="search-container">
@@ -116,14 +133,32 @@
         <span class="section-title">PEER COMPARISON</span>
         <span class="section-line"></span>
       </div>
+      <div class="metrics-filter" id="peerMetricsFilter">
+        <button id="peerMetricsToggle" class="metrics-dropdown-button" type="button" aria-haspopup="true" aria-expanded="false">
+          <span class="dropdown-label">Choose peer metrics</span>
+          <span class="dropdown-arrow">▾</span>
+        </button>
+        <div id="peerMetricsDropdown" class="metrics-dropdown-panel hidden" role="menu" aria-label="Peer metric selection"></div>
+        <span class="filter-help">Toggle the dropdown then choose metrics to display.</span>
+      </div>
       <div class="table-wrapper">
         <table class="peer-table" id="peerTable">
           <thead>
             <tr>
               <th>SYMBOL</th>
-              <th class="num-col">P/E</th>
-              <th class="num-col">P/S</th>
-              <th class="num-col">EV/EBITDA</th>
+              <th class="num-col" data-metric="current_price">CURRENT PRICE</th>
+              <th class="num-col" data-metric="market_cap_millions">MARKET CAP</th>
+              <th class="num-col" data-metric="ebitda">EBITDA (TTM)</th>
+              <th class="num-col" data-metric="pe">P/E</th>
+              <th class="num-col" data-metric="ps">P/S</th>
+              <th class="num-col" data-metric="ev">EV/EBITDA</th>
+              <th class="num-col" data-metric="dcf_intrinsic_value">DCF VALUE</th>
+              <th class="num-col" data-metric="week_52_high">52W HIGH</th>
+              <th class="num-col" data-metric="week_52_low">52W LOW</th>
+              <th class="num-col" data-metric="beta">BETA</th>
+              <th class="num-col" data-metric="revenue_growth_ttm">REV GROWTH</th>
+              <th class="num-col" data-metric="net_margin_ttm">NET MARGIN</th>
+              <th class="num-col" data-metric="roe_ttm">ROE</th>
               <th>VS SUBJECT</th>
             </tr>
           </thead>
@@ -222,6 +257,27 @@
         <div class="feature-item"><span class="fi-dot">●</span>Transparent DCF with stated assumptions</div>
         <div class="feature-item"><span class="fi-dot">●</span>3–5 peer benchmark comparison</div>
         <div class="feature-item"><span class="fi-dot sell-dot">●</span>4-horizon outlook grounded in data</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Metric detail modal ── -->
+  <div id="metricModal" class="metric-modal hidden">
+    <div class="metric-modal-overlay" id="metricModalOverlay"></div>
+    <div class="metric-modal-content">
+      <button id="metricModalClose" class="metric-modal-close" type="button">✕</button>
+      <div class="metric-modal-header">
+        <span id="metricModalLabel" class="modal-metric-label"></span>
+      </div>
+      <div class="metric-modal-body">
+        <div class="modal-section">
+          <h3 class="modal-section-title">Definition</h3>
+          <p id="metricDefinition" class="modal-text"></p>
+        </div>
+        <div class="modal-section">
+          <h3 class="modal-section-title">Why it matters</h3>
+          <p id="metricImportance" class="modal-text"></p>
+        </div>
       </div>
     </div>
   </div>
